@@ -29,6 +29,16 @@
 
   <modules>
     <module>phase-01-domain-model</module>
+    <module>phase-02-producer-consumer</module>
+    <module>phase-03-multiple-producers</module>
+    <module>phase-04-worker-pool</module>
     <module>phase-05-shared-state</module>
+    <module>phase-06-per-user-ordering</module>
+    <module>phase-07-recommendation-pipeline</module>
+    <module>phase-08-backpressure</module>
+    <module>phase-09-failure-handling</module>
+    <module>phase-10-graceful-shutdown</module>
+    <module>phase-11-performance</module>
+    <module>phase-12-advanced</module>
   </modules>
 </project>

@@ -37,8 +37,25 @@ Before Phase 1 (once):
 
 ## Status
 
-Phases 1 and 5 are generated (skeletons, tests, READMEs); the other phases are not yet. Progress: `.learn-by-doing/state.json`, dashboard at `.learn-by-doing/dashboard.html`.
+Phases 1 to 12 are generated: 12 Maven modules and 50 challenges (skeleton, tests, README each). Phase 13 (Kafka and Redis) is not generated: it is gated behind the main roadmap's Kafka phase. Progress: `.learn-by-doing/state.json`, dashboard at `.learn-by-doing/dashboard.html`.
 
-Start: `cd phase-01-domain-model/01-event-model`, read its README, edit `../src/main/java/dev/conc/p1/`, then `mvn -q -f ../pom.xml test -Dtest='C01*'`. Phase 5 does not depend on Phase 1 (it ships its own complete domain classes), so Phase 5's first experiment (`05 / 01-lost-updates`) can be done first if you want the first post sooner.
+| Phase | Module | Challenges |
+|---|---|---|
+| 1 Domain model | `phase-01-domain-model` | 3 |
+| 2 Producer / consumer | `phase-02-producer-consumer` | 3 |
+| 3 Multiple producers | `phase-03-multiple-producers` | 3 |
+| 4 Worker pool | `phase-04-worker-pool` | 4 |
+| 5 Shared user state | `phase-05-shared-state` | 6 |
+| 6 Per-user ordering | `phase-06-per-user-ordering` | 3 |
+| 7 Recommendation pipeline | `phase-07-recommendation-pipeline` | 4 |
+| 8 Backpressure | `phase-08-backpressure` | 4 |
+| 9 Failure handling | `phase-09-failure-handling` | 4 |
+| 10 Graceful shutdown | `phase-10-graceful-shutdown` | 3 |
+| 11 Performance experiments | `phase-11-performance` | 4 |
+| 12 Advanced | `phase-12-advanced` | 9 |
 
-Validated: with a reference solution (kept out of this repo) all 24 Phase 1 tests and all 46 Phase 5 tests pass, and the Phase 5 contract tests fail against the deliberately broken `UnsafeProfileStore`.
+Work in order. Start: `cd phase-01-domain-model/01-event-model`, read its README, edit `../src/main/java/dev/conc/p1/`, then `mvn -q -f ../pom.xml test -Dtest='C01*'`. Every phase folder has a `README.md` with its challenge table, the reading and the evidence you should write down. Each phase is self-contained (it ships its own copy of `Event` and `EventType`), so a later phase never depends on your solution to an earlier one. Phase 5's first experiment (`05 / 01-lost-updates`) can be done early if you want a first post sooner.
+
+Tests in phases 2 to 12 have a default timeout of 60 s each (`src/test/resources/junit-platform.properties`), so an unfinished or deadlocked solution fails instead of hanging. Timing-based tests (phases 3, 7, 8, 11, 12) need several free cores and a quiet machine: if one fails, run it again before suspecting your code.
+
+Validated: with a reference solution for every challenge (kept out of this repo) all tests of phases 1 to 12 pass, and with the unimplemented skeletons they fail at the `TODO`s.

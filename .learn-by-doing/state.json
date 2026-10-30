@@ -13,7 +13,7 @@
     "environment_notes": {
       "build_tool": "Maven 3.9, one module per phase, challenge folders hold READMEs, tests run with -Dtest='CNN*' from the challenge folder via the phase pom",
       "jdk": "openjdk 25.0.2",
-      "scope": "Phases 1 and 5 are generated. Phases 2-4 and 6-12 are listed in README.md and not generated yet; Phase 13 is gated behind the main roadmap's Kafka phase."
+      "scope": "Phases 1-12 are generated (Phase 1 and 5 first, then 2-4 and 6-12). Phase 13 (Kafka and Redis) is gated behind the main roadmap's Kafka phase and not generated."
     },
     "stages": [
       {
@@ -44,6 +44,103 @@
           }
         ],
         "title": "Phase 1: Domain model",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C03 tests; a note on notify vs notifyAll.",
+        "id": "phase-02-producer-consumer",
+        "objective": "Build a bounded buffer by hand, then use BlockingQueue and handle shutdown and failure.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p2-c01",
+            "objective": "Bounded FIFO from synchronized, wait, notifyAll.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Wait/notify buffer"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p2-c02",
+            "objective": "Same buffer with ReentrantLock, two Conditions and timeouts.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Condition buffer"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p2-c03",
+            "objective": "ArrayBlockingQueue pipeline with clean stop and no hang on failure.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Producer/consumer pipeline"
+          }
+        ],
+        "title": "Phase 2: Producer / consumer",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C03 tests; a queue contention note.",
+        "id": "phase-03-multiple-producers",
+        "objective": "Several producers into one queue: termination, barriers and a two-lock queue.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p3-c01",
+            "objective": "N producers, one consumer, stop when the last producer finishes.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Multi-producer pipeline"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p3-c02",
+            "objective": "Lock-step rounds with a barrier; a failure must not hang the rest.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Round runner"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p3-c03",
+            "objective": "Michael-Scott two-lock linked queue.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Two-lock queue"
+          }
+        ],
+        "title": "Phase 3: Multiple producers",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C04 tests; a pool-sizing sweep note.",
+        "id": "phase-04-worker-pool",
+        "objective": "Build a pool, configure ThreadPoolExecutor, size it from evidence, and never lose a task failure.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p4-c01",
+            "objective": "Fixed worker pool from threads and a bounded queue.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Simple pool"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p4-c02",
+            "objective": "ThreadPoolExecutor from a spec: growth, rejection, expiry.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Executor config"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p4-c03",
+            "objective": "Sizing formulas, Little's law and a throughput sweep.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Pool sizing"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p4-c04",
+            "objective": "A pool that reports every task failure exactly once.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Failed tasks"
+          }
+        ],
+        "title": "Phase 4: Worker pool",
         "validation_style": "mvn -q test per challenge"
       },
       {
@@ -96,6 +193,286 @@
         ],
         "title": "Phase 5: Shared user state",
         "validation_style": "mvn -q test per challenge; manual experiments recorded in results/"
+      },
+      {
+        "completion_criteria": "Pass C01 to C03 tests; an ordering-violations note.",
+        "id": "phase-06-per-user-ordering",
+        "objective": "Parallel across users, ordered within a user: lanes, a serial executor and the single-writer idea.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p6-c01",
+            "objective": "N single-thread lanes; a key always maps to one lane.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Lane executor"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p6-c02",
+            "objective": "Per-key order on a shared pool with fairness and no thread per key.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Keyed serial executor"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p6-c03",
+            "objective": "Lock-free profile store using the single-writer idea.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Lane profile store"
+          }
+        ],
+        "title": "Phase 6: Per-user ordering",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C04 tests; a callback-threads note with measured timer lateness.",
+        "id": "phase-07-recommendation-pipeline",
+        "objective": "Compose asynchronous steps with CompletableFuture, handle slowness and failure, and control callback threads.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p7-c01",
+            "objective": "Chain remote calls with thenCompose and fan out with allOf, never blocking.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Recommender chain"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p7-c02",
+            "objective": "Run two independent sources in parallel and merge, surviving one failure.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Hybrid recommender"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p7-c03",
+            "objective": "A recommender that always answers: timeouts, failures, fallback.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Timeout and fallback"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p7-c04",
+            "objective": "Run heavy callbacks on a CPU pool, not the I/O thread.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Callback threads"
+          }
+        ],
+        "title": "Phase 7: Recommendation pipeline",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C04 tests; a flood note with depth samples and the out-of-memory run.",
+        "id": "phase-08-backpressure",
+        "objective": "Break a pipeline with an unbounded queue, then bound it: policies, credits and priority shedding.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p8-c01",
+            "objective": "Unbounded queue, faster producer: measure the growth.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Flood"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p8-c02",
+            "objective": "Bounded ingest with block, reject, drop-oldest and timeout.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Bounded policies"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p8-c03",
+            "objective": "Bound in-flight work end to end with credits.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Credit gate"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p8-c04",
+            "objective": "Evict the least valuable event when full.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Priority shedding"
+          }
+        ],
+        "title": "Phase 8: Backpressure",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C04 tests; a retry-jitter simulation note.",
+        "id": "phase-09-failure-handling",
+        "objective": "Retries with backoff and jitter, a dead letter queue, a circuit breaker and idempotent processing.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p9-c01",
+            "objective": "Exponential backoff, cap, jitter and overflow safety.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Retry with backoff"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p9-c02",
+            "objective": "A consumer that retries, dead-letters and continues.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Dead letter queue"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p9-c03",
+            "objective": "Closed/open/half-open breaker, thread-safe, action outside the lock.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Circuit breaker"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p9-c04",
+            "objective": "Bounded atomic de-duplication and an at-most-once recorder.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Idempotency"
+          }
+        ],
+        "title": "Phase 9: Failure handling",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C03 tests; a shutdown-race note with measured losses.",
+        "id": "phase-10-graceful-shutdown",
+        "objective": "Close pools in two phases, stop workers on interrupt without losing events, and drain a pipeline safely.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p10-c01",
+            "objective": "shutdown, wait, shutdownNow, and caller interruption.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Close a pool"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p10-c02",
+            "objective": "Stop on interrupt, lose nothing, restore the flag.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Interruptible worker"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p10-c03",
+            "objective": "Accepted means processed, even when close races with submit.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Drainable pipeline"
+          }
+        ],
+        "title": "Phase 10: Graceful shutdown",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C04 tests; coordinated-omission, worker-sweep and latency-knee notes with real numbers.",
+        "id": "phase-11-performance",
+        "objective": "Measure honestly: a latency histogram, open and closed load generators, a worker sweep, and scalability models.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p11-c01",
+            "objective": "Fixed-memory histogram with percentiles under 1% error.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Latency histogram"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p11-c02",
+            "objective": "Closed-loop and open-loop generators that show coordinated omission.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Load generators"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p11-c03",
+            "objective": "Throughput and latency from 1 to 32 workers, as CSV.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Worker sweep"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p11-c04",
+            "objective": "Find the knee; Amdahl, USL and Little's law.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Knee and USL"
+          }
+        ],
+        "title": "Phase 11: Performance experiments",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C09 tests; notes on virtual vs platform threads, time-slicing fairness and server models.",
+        "id": "phase-12-advanced",
+        "objective": "Virtual threads, fork/join, StampedLock, ScopedValue, a Trino-style time-sliced scheduler and three network server models.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Tests C01 pass.",
+            "id": "p12-c01",
+            "objective": "Fan out thousands of blocking tasks on virtual threads.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Virtual threads"
+          },
+          {
+            "expected_outcome": "Tests C02 pass.",
+            "id": "p12-c02",
+            "objective": "Per-user scores by divide and conquer in a given ForkJoinPool.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Fork/join"
+          },
+          {
+            "expected_outcome": "Tests C03 pass.",
+            "id": "p12-c03",
+            "objective": "Optimistic reads with validation and a read-lock fallback.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Stamped lock"
+          },
+          {
+            "expected_outcome": "Tests C04 pass.",
+            "id": "p12-c04",
+            "objective": "A semaphore limiter and a request id in a ScopedValue.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Limiter and scoped value"
+          },
+          {
+            "expected_outcome": "Tests C05 pass.",
+            "id": "p12-c05",
+            "objective": "Fixed threads running many splits a quantum at a time (Trino TaskExecutor model).",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Time-sliced scheduler"
+          },
+          {
+            "expected_outcome": "Tests C06 pass.",
+            "id": "p12-c06",
+            "objective": "Short work first, long work never starved (Trino MultilevelSplitQueue model).",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Multilevel queue"
+          },
+          {
+            "expected_outcome": "Tests C07 pass.",
+            "id": "p12-c07",
+            "objective": "TCP event server, thread per connection.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Blocking server"
+          },
+          {
+            "expected_outcome": "Tests C08 pass.",
+            "id": "p12-c08",
+            "objective": "TCP event server on one selector thread.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "NIO server"
+          },
+          {
+            "expected_outcome": "Tests C09 pass.",
+            "id": "p12-c09",
+            "objective": "TCP event server, virtual thread per connection.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Virtual-thread server"
+          }
+        ],
+        "title": "Phase 12: Advanced concurrency",
+        "validation_style": "mvn -q test per challenge"
       }
     ]
   },
@@ -130,6 +507,107 @@
       "id": "phase-01-domain-model",
       "status": "pending",
       "title": "Phase 1: Domain model"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p2-c01",
+          "last_result": null,
+          "path": "phase-02-producer-consumer/01-wait-notify-buffer",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Wait/notify buffer"
+        },
+        {
+          "id": "p2-c02",
+          "last_result": null,
+          "path": "phase-02-producer-consumer/02-condition-buffer",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Condition buffer"
+        },
+        {
+          "id": "p2-c03",
+          "last_result": null,
+          "path": "phase-02-producer-consumer/03-pipeline",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Producer/consumer pipeline"
+        }
+      ],
+      "id": "phase-02-producer-consumer",
+      "status": "pending",
+      "title": "Phase 2: Producer / consumer"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p3-c01",
+          "last_result": null,
+          "path": "phase-03-multiple-producers/01-multi-producer-pipeline",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Multi-producer pipeline"
+        },
+        {
+          "id": "p3-c02",
+          "last_result": null,
+          "path": "phase-03-multiple-producers/02-round-runner",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Round runner"
+        },
+        {
+          "id": "p3-c03",
+          "last_result": null,
+          "path": "phase-03-multiple-producers/03-two-lock-queue",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Two-lock queue"
+        }
+      ],
+      "id": "phase-03-multiple-producers",
+      "status": "pending",
+      "title": "Phase 3: Multiple producers"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p4-c01",
+          "last_result": null,
+          "path": "phase-04-worker-pool/01-simple-pool",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Simple pool"
+        },
+        {
+          "id": "p4-c02",
+          "last_result": null,
+          "path": "phase-04-worker-pool/02-executor-config",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Executor config"
+        },
+        {
+          "id": "p4-c03",
+          "last_result": null,
+          "path": "phase-04-worker-pool/03-pool-sizing",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Pool sizing"
+        },
+        {
+          "id": "p4-c04",
+          "last_result": null,
+          "path": "phase-04-worker-pool/04-failed-tasks",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Failed tasks"
+        }
+      ],
+      "id": "phase-04-worker-pool",
+      "status": "pending",
+      "title": "Phase 4: Worker pool"
     },
     {
       "challenges": [
@@ -185,6 +663,303 @@
       "id": "phase-05-shared-state",
       "status": "pending",
       "title": "Phase 5: Shared user state"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p6-c01",
+          "last_result": null,
+          "path": "phase-06-per-user-ordering/01-lane-executor",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Lane executor"
+        },
+        {
+          "id": "p6-c02",
+          "last_result": null,
+          "path": "phase-06-per-user-ordering/02-serial-executor",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Keyed serial executor"
+        },
+        {
+          "id": "p6-c03",
+          "last_result": null,
+          "path": "phase-06-per-user-ordering/03-lane-profile-store",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Lane profile store"
+        }
+      ],
+      "id": "phase-06-per-user-ordering",
+      "status": "pending",
+      "title": "Phase 6: Per-user ordering"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p7-c01",
+          "last_result": null,
+          "path": "phase-07-recommendation-pipeline/01-recommender-chain",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Recommender chain"
+        },
+        {
+          "id": "p7-c02",
+          "last_result": null,
+          "path": "phase-07-recommendation-pipeline/02-hybrid",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Hybrid recommender"
+        },
+        {
+          "id": "p7-c03",
+          "last_result": null,
+          "path": "phase-07-recommendation-pipeline/03-timeout-fallback",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Timeout and fallback"
+        },
+        {
+          "id": "p7-c04",
+          "last_result": null,
+          "path": "phase-07-recommendation-pipeline/04-callback-threads",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Callback threads"
+        }
+      ],
+      "id": "phase-07-recommendation-pipeline",
+      "status": "pending",
+      "title": "Phase 7: Recommendation pipeline"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p8-c01",
+          "last_result": null,
+          "path": "phase-08-backpressure/01-flood",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Flood"
+        },
+        {
+          "id": "p8-c02",
+          "last_result": null,
+          "path": "phase-08-backpressure/02-bounded-policies",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Bounded policies"
+        },
+        {
+          "id": "p8-c03",
+          "last_result": null,
+          "path": "phase-08-backpressure/03-credit-gate",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Credit gate"
+        },
+        {
+          "id": "p8-c04",
+          "last_result": null,
+          "path": "phase-08-backpressure/04-priority-shedding",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Priority shedding"
+        }
+      ],
+      "id": "phase-08-backpressure",
+      "status": "pending",
+      "title": "Phase 8: Backpressure"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p9-c01",
+          "last_result": null,
+          "path": "phase-09-failure-handling/01-retry",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Retry with backoff"
+        },
+        {
+          "id": "p9-c02",
+          "last_result": null,
+          "path": "phase-09-failure-handling/02-dead-letter",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Dead letter queue"
+        },
+        {
+          "id": "p9-c03",
+          "last_result": null,
+          "path": "phase-09-failure-handling/03-circuit-breaker",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Circuit breaker"
+        },
+        {
+          "id": "p9-c04",
+          "last_result": null,
+          "path": "phase-09-failure-handling/04-idempotency",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Idempotency"
+        }
+      ],
+      "id": "phase-09-failure-handling",
+      "status": "pending",
+      "title": "Phase 9: Failure handling"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p10-c01",
+          "last_result": null,
+          "path": "phase-10-graceful-shutdown/01-close-a-pool",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Close a pool"
+        },
+        {
+          "id": "p10-c02",
+          "last_result": null,
+          "path": "phase-10-graceful-shutdown/02-interruptible-worker",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Interruptible worker"
+        },
+        {
+          "id": "p10-c03",
+          "last_result": null,
+          "path": "phase-10-graceful-shutdown/03-drainable-pipeline",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Drainable pipeline"
+        }
+      ],
+      "id": "phase-10-graceful-shutdown",
+      "status": "pending",
+      "title": "Phase 10: Graceful shutdown"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p11-c01",
+          "last_result": null,
+          "path": "phase-11-performance/01-latency-histogram",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Latency histogram"
+        },
+        {
+          "id": "p11-c02",
+          "last_result": null,
+          "path": "phase-11-performance/02-load-generators",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Load generators"
+        },
+        {
+          "id": "p11-c03",
+          "last_result": null,
+          "path": "phase-11-performance/03-worker-sweep",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Worker sweep"
+        },
+        {
+          "id": "p11-c04",
+          "last_result": null,
+          "path": "phase-11-performance/04-knee-and-usl",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Knee and USL"
+        }
+      ],
+      "id": "phase-11-performance",
+      "status": "pending",
+      "title": "Phase 11: Performance experiments"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p12-c01",
+          "last_result": null,
+          "path": "phase-12-advanced/01-virtual-threads",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Virtual threads"
+        },
+        {
+          "id": "p12-c02",
+          "last_result": null,
+          "path": "phase-12-advanced/02-fork-join",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Fork/join"
+        },
+        {
+          "id": "p12-c03",
+          "last_result": null,
+          "path": "phase-12-advanced/03-stamped-lock",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Stamped lock"
+        },
+        {
+          "id": "p12-c04",
+          "last_result": null,
+          "path": "phase-12-advanced/04-limiter-and-scoped-value",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "Limiter and scoped value"
+        },
+        {
+          "id": "p12-c05",
+          "last_result": null,
+          "path": "phase-12-advanced/05-time-sliced-scheduler",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C05*'",
+          "title": "Time-sliced scheduler"
+        },
+        {
+          "id": "p12-c06",
+          "last_result": null,
+          "path": "phase-12-advanced/06-multilevel-queue",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C06*'",
+          "title": "Multilevel queue"
+        },
+        {
+          "id": "p12-c07",
+          "last_result": null,
+          "path": "phase-12-advanced/07-blocking-server",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C07*'",
+          "title": "Blocking server"
+        },
+        {
+          "id": "p12-c08",
+          "last_result": null,
+          "path": "phase-12-advanced/08-nio-server",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C08*'",
+          "title": "NIO server"
+        },
+        {
+          "id": "p12-c09",
+          "last_result": null,
+          "path": "phase-12-advanced/09-virtual-thread-server",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C09*'",
+          "title": "Virtual-thread server"
+        }
+      ],
+      "id": "phase-12-advanced",
+      "status": "pending",
+      "title": "Phase 12: Advanced concurrency"
     }
   ],
   "updated_at": "2026-10-30T09:29:39+00:00",

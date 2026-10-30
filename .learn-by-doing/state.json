@@ -1,0 +1,192 @@
+{
+  "created_at": "2026-10-30T09:26:09+00:00",
+  "environment": {
+    "platform": {
+      "arch": "x86_64",
+      "os": "linux"
+    },
+    "tools": []
+  },
+  "goal": "Learn Java concurrency by building a real-time recommendation engine, so I can build systems like MiniTrino on my own",
+  "level": "intermediate",
+  "roadmap": {
+    "environment_notes": {
+      "build_tool": "Maven 3.9, one module per phase, challenge folders hold READMEs, tests run with -Dtest='CNN*' from the challenge folder via the phase pom",
+      "jdk": "openjdk 25.0.2",
+      "scope": "Phases 1 and 5 are generated. Phases 2-4 and 6-12 are listed in README.md and not generated yet; Phase 13 is gated behind the main roadmap's Kafka phase."
+    },
+    "stages": [
+      {
+        "completion_criteria": "Pass C01 to C03 tests.",
+        "id": "phase-01-domain-model",
+        "objective": "Build the immutable types every later phase passes between threads.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "Validation rules satisfied.",
+            "id": "p1-c01",
+            "objective": "Immutable Event with validation and EventType weights.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Event model"
+          },
+          {
+            "expected_outcome": "Deterministic stream with a hot user.",
+            "id": "p1-c02",
+            "objective": "Seeded, skewed generator with per-user sequence numbers.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Event generator"
+          },
+          {
+            "expected_outcome": "Counts, score, distinct products, last seq.",
+            "id": "p1-c03",
+            "objective": "Single-threaded UserBehaviourProfile.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Behaviour profile"
+          }
+        ],
+        "title": "Phase 1: Domain model",
+        "validation_style": "mvn -q test per challenge"
+      },
+      {
+        "completion_criteria": "Pass C01 to C06 tests; results notes for lost updates, stop flag, store trade-offs and jcstress.",
+        "id": "phase-05-shared-state",
+        "objective": "Reproduce races on purpose, fix them three ways, and learn the Java Memory Model rules.",
+        "planned_challenges": [
+          {
+            "expected_outcome": "A harness that makes the race visible.",
+            "id": "p5-c01",
+            "objective": "Show lost updates with plain threads.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Lost updates"
+          },
+          {
+            "expected_outcome": "A demo and a results note.",
+            "id": "p5-c02",
+            "objective": "Plain vs volatile stop flag; explore JIT with -Xint and PrintCompilation.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "The flag that never stops"
+          },
+          {
+            "expected_outcome": "Exact counts under 8 threads.",
+            "id": "p5-c03",
+            "objective": "Synchronized store.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Fix with synchronized"
+          },
+          {
+            "expected_outcome": "Exact counts under 8 threads.",
+            "id": "p5-c04",
+            "objective": "Lock-free-style store using per-key atomic operations.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "ConcurrentHashMap and LongAdder"
+          },
+          {
+            "expected_outcome": "Exact counts for 1, 16, 256 stripes.",
+            "id": "p5-c05",
+            "objective": "ReentrantLock per stripe.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Striped locks"
+          },
+          {
+            "expected_outcome": "Correct answers with the rule named.",
+            "id": "p5-c06",
+            "objective": "Ten JMM scenarios with reasons.",
+            "project_shape": "maven module phase, challenge README + tests",
+            "title": "Memory model quiz"
+          }
+        ],
+        "title": "Phase 5: Shared user state",
+        "validation_style": "mvn -q test per challenge; manual experiments recorded in results/"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "challenges": [
+        {
+          "id": "p1-c01",
+          "last_result": null,
+          "path": "phase-01-domain-model/01-event-model",
+          "status": "active",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Event model"
+        },
+        {
+          "id": "p1-c02",
+          "last_result": null,
+          "path": "phase-01-domain-model/02-event-generator",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "Event generator"
+        },
+        {
+          "id": "p1-c03",
+          "last_result": null,
+          "path": "phase-01-domain-model/03-behaviour-profile",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Behaviour profile"
+        }
+      ],
+      "id": "phase-01-domain-model",
+      "status": "pending",
+      "title": "Phase 1: Domain model"
+    },
+    {
+      "challenges": [
+        {
+          "id": "p5-c01",
+          "last_result": null,
+          "path": "phase-05-shared-state/01-lost-updates",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
+          "title": "Lost updates"
+        },
+        {
+          "id": "p5-c02",
+          "last_result": null,
+          "path": "phase-05-shared-state/02-stop-flag",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
+          "title": "The flag that never stops"
+        },
+        {
+          "id": "p5-c03",
+          "last_result": null,
+          "path": "phase-05-shared-state/03-synchronized",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
+          "title": "Fix with synchronized"
+        },
+        {
+          "id": "p5-c04",
+          "last_result": null,
+          "path": "phase-05-shared-state/04-concurrent-map",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C04*'",
+          "title": "ConcurrentHashMap and LongAdder"
+        },
+        {
+          "id": "p5-c05",
+          "last_result": null,
+          "path": "phase-05-shared-state/05-striped-locks",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C05*'",
+          "title": "Striped locks"
+        },
+        {
+          "id": "p5-c06",
+          "last_result": null,
+          "path": "phase-05-shared-state/06-memory-model",
+          "status": "pending",
+          "test_command": "mvn -q -f ../pom.xml test -Dtest='C06*'",
+          "title": "Memory model quiz"
+        }
+      ],
+      "id": "phase-05-shared-state",
+      "status": "pending",
+      "title": "Phase 5: Shared user state"
+    }
+  ],
+  "updated_at": "2026-10-30T09:29:39+00:00",
+  "version": 1
+}

@@ -27,5 +27,8 @@
     </dependencies>
   </dependencyManagement>
 
-  <!-- one module per phase, added when the phase is started -->
+  <modules>
+    <module>phase-01-domain-model</module>
+    <module>phase-05-shared-state</module>
+  </modules>
 </project>

@@ -37,4 +37,8 @@ Before Phase 1 (once):
 
 ## Status
 
-Not started. Next: Phase 1, then Phase 5's first experiment (`counter++` from four threads), which is the first post.
+Phases 1 and 5 are generated (skeletons, tests, READMEs); the other phases are not yet. Progress: `.learn-by-doing/state.json`, dashboard at `.learn-by-doing/dashboard.html`.
+
+Start: `cd phase-01-domain-model/01-event-model`, read its README, edit `../src/main/java/dev/conc/p1/`, then `mvn -q -f ../pom.xml test -Dtest='C01*'`. Phase 5 does not depend on Phase 1 (it ships its own complete domain classes), so Phase 5's first experiment (`05 / 01-lost-updates`) can be done first if you want the first post sooner.
+
+Validated: with a reference solution (kept out of this repo) all 24 Phase 1 tests and all 46 Phase 5 tests pass, and the Phase 5 contract tests fail against the deliberately broken `UnsafeProfileStore`.

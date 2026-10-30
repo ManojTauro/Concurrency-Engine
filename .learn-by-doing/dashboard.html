@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learn Java concurrency by building a real-time recommendation engine, so I can build systems like MiniTrino on my own</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f3;
+      --panel: #ffffff;
+      --text: #242424;
+      --muted: #64665f;
+      --line: #d9dbd2;
+      --active: #1f6f5b;
+      --passed: #2367a0;
+      --pending: #7a6118;
+      --failed: #a23d3d;
+      --blocked: #714aa0;
+      --code: #eceee7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.18;
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    h4 {
+      font-size: 15px;
+    }
+
+    p {
+      margin: 6px 0 0;
+    }
+
+    a {
+      color: var(--active);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      background: var(--code);
+      border-radius: 5px;
+      padding: 2px 5px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.94em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .muted, .meta {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .panel, .stage, .challenge {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .facts {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .fact {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+
+    .fact:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid currentColor;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      color: var(--pending);
+      white-space: nowrap;
+    }
+
+    .badge-active, .badge-available {
+      color: var(--active);
+    }
+
+    .badge-passed {
+      color: var(--passed);
+    }
+
+    .badge-failed, .badge-missing {
+      color: var(--failed);
+    }
+
+    .badge-blocked {
+      color: var(--blocked);
+    }
+
+    .stages {
+      display: grid;
+      gap: 16px;
+    }
+
+    .stage-head, .challenge-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        width: min(100% - 24px, 1120px);
+        padding-top: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .grid, .challenge-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-head, .challenge-head, .fact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Learn By Doing</h1>
+      <p class="muted">Learn Java concurrency by building a real-time recommendation engine, so I can build systems like MiniTrino on my own</p>
+    </header>
+
+    <section class="grid" aria-label="Current learning state">
+      <article class="panel">
+        <h2>Current challenge</h2><span class="badge badge-active">active</span><h3>Event model</h3><p>Path: <a href="../phase-01-domain-model/01-event-model/README.md"><code>phase-01-domain-model/01-event-model</code></a></p><p>Validation: <code>mvn -q -f ../pom.xml test -Dtest=&#x27;C01*&#x27;</code></p><p class="muted">Last result: Validation pending.</p>
+      </article>
+      <article class="panel">
+        <h2>Progress</h2>
+        <div class="facts">
+          <div class="fact"><span>Level</span><strong>intermediate</strong></div>
+          <div class="fact"><span>Platform</span><strong>linux x86_64</strong></div>
+          <div class="fact"><span>Stages</span><strong>2</strong></div>
+          <div class="fact"><span>Challenges</span><strong>0 / 9 passed</strong></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" aria-label="Environment">
+      <h2>Environment</h2>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Status</th><th>Version</th><th>Path</th></tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="4" class="muted">Environment probe pending.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-label="Roadmap" style="margin-top: 24px;">
+      <h2>Roadmap</h2>
+      <div class="stages">
+        <section class="stage"><div class="stage-head"><div><h3>phase-01-domain-model: Phase 1: Domain model</h3><p>Build the immutable types every later phase passes between threads.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass C01 to C03 tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Event model</h4><span class="badge badge-active">active</span></div><p class="meta">ID: <code>p1-c01</code></p><p>Immutable Event with validation and EventType weights.</p><p>Path: <a href="../phase-01-domain-model/01-event-model/README.md"><code>phase-01-domain-model/01-event-model</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Event generator</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p1-c02</code></p><p>Seeded, skewed generator with per-user sequence numbers.</p><p>Path: <a href="../phase-01-domain-model/02-event-generator/README.md"><code>phase-01-domain-model/02-event-generator</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Behaviour profile</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p1-c03</code></p><p>Single-threaded UserBehaviourProfile.</p><p>Path: <a href="../phase-01-domain-model/03-behaviour-profile/README.md"><code>phase-01-domain-model/03-behaviour-profile</code></a></p></article></div></section>
+<section class="stage"><div class="stage-head"><div><h3>phase-05-shared-state: Phase 5: Shared user state</h3><p>Reproduce races on purpose, fix them three ways, and learn the Java Memory Model rules.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass C01 to C06 tests; results notes for lost updates, stop flag, store trade-offs and jcstress.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Lost updates</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c01</code></p><p>Show lost updates with plain threads.</p><p>Path: <a href="../phase-05-shared-state/01-lost-updates/README.md"><code>phase-05-shared-state/01-lost-updates</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>The flag that never stops</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c02</code></p><p>Plain vs volatile stop flag; explore JIT with -Xint and PrintCompilation.</p><p>Path: <a href="../phase-05-shared-state/02-stop-flag/README.md"><code>phase-05-shared-state/02-stop-flag</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Fix with synchronized</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c03</code></p><p>Synchronized store.</p><p>Path: <a href="../phase-05-shared-state/03-synchronized/README.md"><code>phase-05-shared-state/03-synchronized</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>ConcurrentHashMap and LongAdder</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c04</code></p><p>Lock-free-style store using per-key atomic operations.</p><p>Path: <a href="../phase-05-shared-state/04-concurrent-map/README.md"><code>phase-05-shared-state/04-concurrent-map</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Striped locks</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c05</code></p><p>ReentrantLock per stripe.</p><p>Path: <a href="../phase-05-shared-state/05-striped-locks/README.md"><code>phase-05-shared-state/05-striped-locks</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Memory model quiz</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p5-c06</code></p><p>Ten JMM scenarios with reasons.</p><p>Path: <a href="../phase-05-shared-state/06-memory-model/README.md"><code>phase-05-shared-state/06-memory-model</code></a></p></article></div></section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

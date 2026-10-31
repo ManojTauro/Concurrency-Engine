@@ -10,6 +10,17 @@ Self-managed: no hours in the roadmap lanes, no dated tasks. Phase 13 (Kafka and
 
 Every experiment gets `results/<YYYY-MM-DD>-<topic>.md` from `results/_TEMPLATE.md`: hypothesis first, exact command and flags, JDK and CPU, raw unedited output, spread over repeated runs, what surprised me, and when it helps and when it does not. No claim goes into a post unless it is in one of these notes.
 
+## How a challenge README is laid out
+
+Every challenge README has the same sections, so you know where to look:
+
+1. **The problem**: what is being solved, in plain words, and why it matters for concurrency.
+2. **What you implement**: the file, the class and the method signatures you fill in (everything else is given).
+3. **Rules**: the exact contract: names, exceptions, ordering, limits. If a rule is not here or in the Javadoc above the method, the tests do not require it.
+4. **Example**: small concrete inputs and outputs or a timeline, so you can check your understanding before you write code. Numbers marked as shape (for example "a smaller number") depend on your machine.
+5. **Run** and **Done when**: the one command, and what counts as finished (including any `results/` note).
+6. **Think about**: questions to answer in your notes; they are not tested.
+
 ## Phases and what to read first
 
 Links and chapter numbers are from memory: check them before relying on them. JCIP = Goetz, *Java Concurrency in Practice*; OSTEP = *Operating Systems: Three Easy Pieces* (pages.cs.wisc.edu/~remzi/OSTEP/).

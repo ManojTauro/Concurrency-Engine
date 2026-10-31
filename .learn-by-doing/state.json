@@ -481,27 +481,30 @@
       "challenges": [
         {
           "id": "p1-c01",
-          "last_result": null,
+          "last_result": "Phase 1 tests passed (C01*)",
           "path": "phase-01-domain-model/01-event-model",
-          "status": "active",
+          "status": "passed",
           "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
-          "title": "Event model"
+          "title": "Event model",
+          "updated_at": "2026-10-31T22:44:31+00:00"
         },
         {
           "id": "p1-c02",
-          "last_result": null,
+          "last_result": "Phase 1 tests passed (C02*)",
           "path": "phase-01-domain-model/02-event-generator",
-          "status": "pending",
+          "status": "passed",
           "test_command": "mvn -q -f ../pom.xml test -Dtest='C02*'",
-          "title": "Event generator"
+          "title": "Event generator",
+          "updated_at": "2026-10-31T22:44:32+00:00"
         },
         {
           "id": "p1-c03",
           "last_result": null,
           "path": "phase-01-domain-model/03-behaviour-profile",
-          "status": "pending",
+          "status": "active",
           "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
-          "title": "Behaviour profile"
+          "title": "Behaviour profile",
+          "updated_at": "2026-10-31T22:44:32+00:00"
         }
       ],
       "id": "phase-01-domain-model",
@@ -962,6 +965,6 @@
       "title": "Phase 12: Advanced concurrency"
     }
   ],
-  "updated_at": "2026-10-30T09:29:39+00:00",
+  "updated_at": "2026-10-31T22:44:32+00:00",
   "version": 1
 }

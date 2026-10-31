@@ -222,7 +222,7 @@
 
     <section class="grid" aria-label="Current learning state">
       <article class="panel">
-        <h2>Current challenge</h2><span class="badge badge-active">active</span><h3>Event model</h3><p>Path: <a href="../phase-01-domain-model/01-event-model/README.md"><code>phase-01-domain-model/01-event-model</code></a></p><p>Validation: <code>mvn -q -f ../pom.xml test -Dtest=&#x27;C01*&#x27;</code></p><p class="muted">Last result: Validation pending.</p>
+        <h2>Current challenge</h2><span class="badge badge-active">active</span><h3>Behaviour profile</h3><p>Path: <a href="../phase-01-domain-model/03-behaviour-profile/README.md"><code>phase-01-domain-model/03-behaviour-profile</code></a></p><p>Validation: <code>mvn -q -f ../pom.xml test -Dtest=&#x27;C03*&#x27;</code></p><p class="muted">Last result: Validation pending.</p>
       </article>
       <article class="panel">
         <h2>Progress</h2>
@@ -230,7 +230,7 @@
           <div class="fact"><span>Level</span><strong>intermediate</strong></div>
           <div class="fact"><span>Platform</span><strong>linux x86_64</strong></div>
           <div class="fact"><span>Stages</span><strong>12</strong></div>
-          <div class="fact"><span>Challenges</span><strong>0 / 50 passed</strong></div>
+          <div class="fact"><span>Challenges</span><strong>2 / 50 passed</strong></div>
         </div>
       </article>
     </section>
@@ -250,9 +250,9 @@
     <section aria-label="Roadmap" style="margin-top: 24px;">
       <h2>Roadmap</h2>
       <div class="stages">
-        <section class="stage"><div class="stage-head"><div><h3>phase-01-domain-model: Phase 1: Domain model</h3><p>Build the immutable types every later phase passes between threads.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass C01 to C03 tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Event model</h4><span class="badge badge-active">active</span></div><p class="meta">ID: <code>p1-c01</code></p><p>Immutable Event with validation and EventType weights.</p><p>Path: <a href="../phase-01-domain-model/01-event-model/README.md"><code>phase-01-domain-model/01-event-model</code></a></p></article>
-<article class="challenge"><div class="challenge-head"><h4>Event generator</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p1-c02</code></p><p>Seeded, skewed generator with per-user sequence numbers.</p><p>Path: <a href="../phase-01-domain-model/02-event-generator/README.md"><code>phase-01-domain-model/02-event-generator</code></a></p></article>
-<article class="challenge"><div class="challenge-head"><h4>Behaviour profile</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p1-c03</code></p><p>Single-threaded UserBehaviourProfile.</p><p>Path: <a href="../phase-01-domain-model/03-behaviour-profile/README.md"><code>phase-01-domain-model/03-behaviour-profile</code></a></p></article></div></section>
+        <section class="stage"><div class="stage-head"><div><h3>phase-01-domain-model: Phase 1: Domain model</h3><p>Build the immutable types every later phase passes between threads.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass C01 to C03 tests.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Event model</h4><span class="badge badge-passed">passed</span></div><p class="meta">ID: <code>p1-c01</code></p><p>Immutable Event with validation and EventType weights.</p><p>Path: <a href="../phase-01-domain-model/01-event-model/README.md"><code>phase-01-domain-model/01-event-model</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Event generator</h4><span class="badge badge-passed">passed</span></div><p class="meta">ID: <code>p1-c02</code></p><p>Seeded, skewed generator with per-user sequence numbers.</p><p>Path: <a href="../phase-01-domain-model/02-event-generator/README.md"><code>phase-01-domain-model/02-event-generator</code></a></p></article>
+<article class="challenge"><div class="challenge-head"><h4>Behaviour profile</h4><span class="badge badge-active">active</span></div><p class="meta">ID: <code>p1-c03</code></p><p>Single-threaded UserBehaviourProfile.</p><p>Path: <a href="../phase-01-domain-model/03-behaviour-profile/README.md"><code>phase-01-domain-model/03-behaviour-profile</code></a></p></article></div></section>
 <section class="stage"><div class="stage-head"><div><h3>phase-02-producer-consumer: Phase 2: Producer / consumer</h3><p>Build a bounded buffer by hand, then use BlockingQueue and handle shutdown and failure.</p></div><span class="badge badge-pending">pending</span></div><p class="muted">Completion: Pass C01 to C03 tests; a note on notify vs notifyAll.</p><div class="challenge-grid"><article class="challenge"><div class="challenge-head"><h4>Wait/notify buffer</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p2-c01</code></p><p>Bounded FIFO from synchronized, wait, notifyAll.</p><p>Path: <a href="../phase-02-producer-consumer/01-wait-notify-buffer/README.md"><code>phase-02-producer-consumer/01-wait-notify-buffer</code></a></p></article>
 <article class="challenge"><div class="challenge-head"><h4>Condition buffer</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p2-c02</code></p><p>Same buffer with ReentrantLock, two Conditions and timeouts.</p><p>Path: <a href="../phase-02-producer-consumer/02-condition-buffer/README.md"><code>phase-02-producer-consumer/02-condition-buffer</code></a></p></article>
 <article class="challenge"><div class="challenge-head"><h4>Producer/consumer pipeline</h4><span class="badge badge-pending">pending</span></div><p class="meta">ID: <code>p2-c03</code></p><p>ArrayBlockingQueue pipeline with clean stop and no hang on failure.</p><p>Path: <a href="../phase-02-producer-consumer/03-pipeline/README.md"><code>phase-02-producer-consumer/03-pipeline</code></a></p></article></div></section>

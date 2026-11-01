@@ -499,12 +499,12 @@
         },
         {
           "id": "p1-c03",
-          "last_result": null,
+          "last_result": "Phase 1 tests passed (C03*)",
           "path": "phase-01-domain-model/03-behaviour-profile",
-          "status": "active",
+          "status": "passed",
           "test_command": "mvn -q -f ../pom.xml test -Dtest='C03*'",
           "title": "Behaviour profile",
-          "updated_at": "2026-10-31T22:44:32+00:00"
+          "updated_at": "2026-11-01T09:11:39+00:00"
         }
       ],
       "id": "phase-01-domain-model",
@@ -517,9 +517,10 @@
           "id": "p2-c01",
           "last_result": null,
           "path": "phase-02-producer-consumer/01-wait-notify-buffer",
-          "status": "pending",
+          "status": "active",
           "test_command": "mvn -q -f ../pom.xml test -Dtest='C01*'",
-          "title": "Wait/notify buffer"
+          "title": "Wait/notify buffer",
+          "updated_at": "2026-11-01T09:11:39+00:00"
         },
         {
           "id": "p2-c02",
@@ -965,6 +966,6 @@
       "title": "Phase 12: Advanced concurrency"
     }
   ],
-  "updated_at": "2026-10-31T22:44:32+00:00",
+  "updated_at": "2026-11-01T09:11:39+00:00",
   "version": 1
 }
